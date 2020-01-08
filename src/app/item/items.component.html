@@ -1,0 +1,9 @@
+<ActionBar title="My App"></ActionBar>
+
+<StackLayout>
+    <Image col="0" [src]="photo" class="img-thumbnail w-100"></Image>
+    <Button class="btn btn-rounded-sm btn-sky" text="Take Photo" margin="10"  (tap)="captureImage()"></Button>
+
+    <CreditCardView #stripeCard></CreditCardView>
+    <Button class="btn btn-blue" text="save payment card" margin="10" (tap)="confirm(stripeCard)"></Button>
+</StackLayout>
