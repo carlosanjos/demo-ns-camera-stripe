@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 
 import { CameraService } from "./camera.service";
 import { requestCameraPermissions } from "nativescript-camera";
@@ -14,6 +14,7 @@ import { StripeService } from "../stripe/stripe.service";
 })
 export class ItemsComponent implements OnInit {
     public photo: ImageSource;
+    public messages: string;
 
     constructor(
         private cameraService: CameraService,
@@ -29,7 +30,7 @@ export class ItemsComponent implements OnInit {
             .pipe(switchMap((image) => this.cameraService.getSourceFromAsset(image)))
             .subscribe((photoSource) => {
                 this.photo = photoSource;
-            })
+            });
     }
 
     public confirm(cardView: CreditCardView): void {
@@ -37,7 +38,10 @@ export class ItemsComponent implements OnInit {
 
         stripe.createPaymentMethod(cardView.card, (error, paymentMethod) => {
             if (error) {
-                alert(error);
+                console.log(error.toString());
+                this.messages = error.toString();
+
+                return;
             }
 
             this.stripeService
@@ -48,9 +52,10 @@ export class ItemsComponent implements OnInit {
                 .subscribe((setupIntent: any) => {
                     stripe.confirmSetupIntent(paymentMethod.id, setupIntent.client_secret, (error: Error, setupItent: StripeSetupIntent) => {
                         if (error) {
-                            alert(error);
+                            console.log(error.toString());
+                            this.messages = error.toString();
                         } else {
-                            alert(setupItent.status);
+                            this.messages = setupItent.status;
                         }
                     });
                 });

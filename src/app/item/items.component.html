@@ -6,4 +6,6 @@
 
     <CreditCardView #stripeCard></CreditCardView>
     <Button class="btn btn-blue" text="save payment card" margin="10" (tap)="confirm(stripeCard)"></Button>
+
+    <Label [text]="messages"></Label>
 </StackLayout>
